@@ -20,8 +20,6 @@ class HomeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var fragmentView = inflater.inflate(R.layout.fragment_home, container, false)
-        var myTextView = fragmentView.findViewById<TextView>(R.id.my_text_view)
-        myTextView.text = "Hello again!"
         return fragmentView
     }
 }
