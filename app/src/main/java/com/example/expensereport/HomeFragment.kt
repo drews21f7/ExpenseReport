@@ -1,5 +1,6 @@
 package com.example.expensereport
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -36,7 +37,10 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         categoryButton.setOnClickListener { println ("Category Click") }
         cancelButton.setOnClickListener { println ("Cancel click") }
-        checkBox.setOnClickListener { println ("Check box click") }
-        categoryText.setOnClickListener { println ("Category text") }
+        checkBox.setOnClickListener{
+            val input = categoryText.text.toString()
+            val intent = Intent(context,CategoriesActivity::class.java)
+            intent.putExtra("categoryInput",input)
+            context?.startActivity(intent)}
     }
 }

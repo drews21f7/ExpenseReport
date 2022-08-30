@@ -6,7 +6,9 @@
         <entry key="app/src/main/res/drawable/cancel.xml" value="0.196" />
         <entry key="app/src/main/res/drawable/check.xml" value="0.196" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1305" />
+        <entry key="app/src/main/res/layout/activity_categories.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2210144927536232" />
+        <entry key="app/src/main/res/layout/category_item.xml" value="0.2971014492753623" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.33" />
       </map>
     </option>
