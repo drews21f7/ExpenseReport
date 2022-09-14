@@ -12,7 +12,10 @@ class CategoriesActivity : AppCompatActivity() {
         println(categoryInput)
         setContentView(R.layout.activity_categories)
         categoriesRecycler = findViewById(R.id.category_recycler)
-        var adaptor = CategoryAdaptor(arrayListOf("a", "b", "c", "d", "e"))
+        val category1 = Category(title = categoryInput!!)
+        val categoryRepo = CategoriesRepo()
+        categoryRepo.categoryList.add(category1)
+        val adaptor = CategoryAdaptor(categoryRepo.categoryList)
         categoriesRecycler.adapter = adaptor
     }
 

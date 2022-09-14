@@ -35,12 +35,17 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        categoryButton.setOnClickListener { println ("Category Click") }
-        cancelButton.setOnClickListener { println ("Cancel click") }
-        checkBox.setOnClickListener{
+        categoryButton.setOnClickListener { println("Category Click") }
+        cancelButton.setOnClickListener { println("Cancel click") }
+        checkBox.setOnClickListener {
             val input = categoryText.text.toString()
-            val intent = Intent(context,CategoriesActivity::class.java)
-            intent.putExtra("categoryInput",input)
-            context?.startActivity(intent)}
+            if (input.isEmpty()) {
+                Toast.makeText(context, "Enter Category!", Toast.LENGTH_LONG).show()
+            } else {
+                val intent = Intent(context, CategoriesActivity::class.java)
+                intent.putExtra("categoryInput", input)
+                context?.startActivity(intent)
+            }
+        }
     }
 }
