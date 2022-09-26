@@ -41,17 +41,13 @@ class CategoryAdaptor(private val categories: ArrayList<Category>): RecyclerView
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = categories[position]
         holder.categoryTitle.text = category.title
-        holder.categoryTotal.text = "$${category.totalPrice}"
+        holder.categoryTotal.text = category.formatExpenseTotals()
         holder.saveButton.setOnClickListener{
             val description = holder.expenseDescription.text.toString()
             val amount = holder.expenseAmount.text.toString().toDouble()
             val categoryExpense = ExpenseItem(description = description, amount = amount)
-            category.expenseItem.add(categoryExpense)
-            var expenseTotal = 0.0
-            for (item in category.expenseItem) {
-                expenseTotal += item.amount
-            }
-            holder.categoryTotal.text = expenseTotal.toString()
+            category.addExpense(categoryExpense)
+            holder.categoryTotal.text = category.formatExpenseTotals()
         }
     }
 

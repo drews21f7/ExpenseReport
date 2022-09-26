@@ -9,15 +9,9 @@ import android.view.ViewGroup
 import android.widget.*
 
 class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private lateinit var categoryButton: Button
     private lateinit var cancelButton: ImageView
     private lateinit var checkBox: ImageView
     private lateinit var categoryText: EditText
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,7 +19,6 @@ class HomeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var fragmentView = inflater.inflate(R.layout.fragment_home, container, false)
-        categoryButton = fragmentView.findViewById(R.id.category_button)
         cancelButton = fragmentView.findViewById(R.id.cancel_button)
         checkBox = fragmentView.findViewById(R.id.check)
         categoryText = fragmentView.findViewById(R.id.category_text)
@@ -35,17 +28,19 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        categoryButton.setOnClickListener { println("Category Click") }
-        cancelButton.setOnClickListener { println("Cancel click") }
+        cancelButton.setOnClickListener { categoryText.text.clear() }
         checkBox.setOnClickListener {
             val input = categoryText.text.toString()
             if (input.isEmpty()) {
                 Toast.makeText(context, "Enter Category!", Toast.LENGTH_LONG).show()
             } else {
                 val intent = Intent(context, CategoriesActivity::class.java)
-                intent.putExtra("categoryInput", input)
                 context?.startActivity(intent)
             }
+        }
+        if (FakeDatabase.getSavedCategories().isNotEmpty()) {
+            val intent = Intent(context, CategoriesActivity::class.java)
+            context?.startActivity(intent)
         }
     }
 }
