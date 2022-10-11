@@ -11,6 +11,9 @@ interface ExpenseItemDao {
     @Query("SELECT * FROM ExpenseItemTable")
     fun getAll(): List<ExpenseItemEntity>
 
+    @Query("SELECT * FROM ExpenseItemTable WHERE category_id == :categoryId")
+    fun getByCategoryId(categoryId: String): List<ExpenseItemEntity>
+
     @Insert
     fun insert(expenseItemEntity: ExpenseItemEntity)
 

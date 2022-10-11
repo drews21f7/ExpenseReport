@@ -3,6 +3,7 @@ package com.example.expensereport
 import android.content.Context
 import com.example.expensereport.Database.CategoryDatabase
 import com.example.expensereport.Database.entities.CategoryEntity
+import com.example.expensereport.Database.entities.ExpenseItemEntity
 
 class CategoriesRepo(context: Context) {
     private val categoryList: ArrayList<Category> = arrayListOf()
@@ -15,6 +16,27 @@ class CategoriesRepo(context: Context) {
 
     fun addCategory(category: Category) {
         database.categoryDao().insert(category.toEntity())
+    }
+
+    fun addExpenseToCategory(
+        categoryTitle: String,
+        expenseDescription: String,
+        expenseAmount: Double
+    ) {
+        val expenseItem = ExpenseItem(description = expenseDescription, amount = expenseAmount)
+        categoryList.forEach{ category ->
+            if (category.title == categoryTitle) {
+                category.addExpense(expenseItem)
+            }
+        }
+
+        database.expenseItemDao().insert(
+            expenseItemEntity = ExpenseItemEntity(
+                categoryId = categoryTitle,
+                description = expenseDescription,
+                amount = expenseAmount
+            )
+        )
     }
 
     fun getAllCategories(): ArrayList<Category> {
