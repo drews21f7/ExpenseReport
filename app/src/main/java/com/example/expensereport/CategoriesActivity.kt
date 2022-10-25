@@ -1,43 +1,50 @@
 package com.example.expensereport
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.expensereport.Database.CategoryDatabase
 import com.example.expensereport.Database.entities.CategoryEntity
 
 class CategoriesActivity : AppCompatActivity() {
+    private lateinit var cancelButton: ImageView
+    private lateinit var checkBox: ImageView
+    private lateinit var categoryText: EditText
+
     private lateinit var categoriesRecycler: RecyclerView
-    //private val categoryRepo = CategoriesRepo()
+    private val categoryRepo = CategoriesRepo(this)
+    private val categoryAdaptor = CategoryAdaptor(categories = categoryRepo.getAllCategories())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_categories)
+
+        cancelButton = findViewById(R.id.cancel_button)
+        checkBox = findViewById(R.id.check)
+        categoryText = findViewById(R.id.category_text)
+
+
+
         categoriesRecycler = findViewById(R.id.category_recycler)
-        //categoryRepo.categoryList.addAll(FakeDatabase.getSavedCategories())
-       // val adaptor = CategoryAdaptor(categoryRepo.categoryList)
-       // categoriesRecycler.adapter = adaptor
-       // testDatabase()
-        val repository = CategoriesRepo(this)
-
+        categoriesRecycler.adapter = categoryAdaptor
+        setClickListener()
     }
 
-    fun testDatabase () {
-        val repository = CategoriesRepo(this)
-        var category = Category(title = "Billtest")
-        category.addExpense(expenseItem = ExpenseItem(description = "Expense1", amount = 2.01))
-        category.addExpense(expenseItem = ExpenseItem(description = "Expense2", amount = 4.25))
-        repository.addCategory(category)
-        repository.addExpenseToCategory(categoryTitle = "Billtest", expenseAmount = 2.01, expenseDescription = "Expense1")
-        repository.addExpenseToCategory(categoryTitle = "Billtest", expenseAmount = 4.25, expenseDescription = "Expense2")
-        var category2 = Category(title = "Billtest2")
-        var category3 = Category(title = "Billtest3")
-        var category4 = Category(title = "Billtest4")
-
-
-        repository.addCategory(category2)
-        repository.addCategory(category3)
-        repository.addCategory(category4)
+    fun setClickListener() {
+        cancelButton.setOnClickListener { categoryText.text.clear() }
+        checkBox.setOnClickListener {
+            val input = categoryText.text.toString()
+            if (input.isEmpty()) {
+                Toast.makeText(this, "Enter Category!", Toast.LENGTH_LONG).show()
+            } else {
+                categoryRepo.addCategory(title = input)
+                Toast.makeText(this, "Category Created", Toast.LENGTH_LONG).show()
+                categoryAdaptor.notifyDataSetChanged()
+            }
+        }
     }
-
 }

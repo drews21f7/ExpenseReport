@@ -14,7 +14,8 @@ class CategoriesRepo(context: Context) {
         initializeCategoryList()
     }
 
-    fun addCategory(category: Category) {
+    fun addCategory(title: String) {
+        val category = Category(title = title)
         database.categoryDao().insert(category.toEntity())
     }
 

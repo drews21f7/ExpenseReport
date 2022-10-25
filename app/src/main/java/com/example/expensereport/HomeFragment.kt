@@ -28,17 +28,19 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val repository = CategoriesRepo(requireContext())
         cancelButton.setOnClickListener { categoryText.text.clear() }
         checkBox.setOnClickListener {
             val input = categoryText.text.toString()
             if (input.isEmpty()) {
                 Toast.makeText(context, "Enter Category!", Toast.LENGTH_LONG).show()
             } else {
+                repository.addCategory(title = input)
                 val intent = Intent(context, CategoriesActivity::class.java)
                 context?.startActivity(intent)
             }
         }
-        if (FakeDatabase.getSavedCategories().isNotEmpty()) {
+        if (repository.getAllCategories().isNotEmpty()) {
             val intent = Intent(context, CategoriesActivity::class.java)
             context?.startActivity(intent)
         }
