@@ -30,13 +30,7 @@ class CategoriesRepo(context: Context) {
             }
         }
 
-        database.expenseItemDao().insert(
-            expenseItemEntity = ExpenseItemEntity(
-                categoryId = categoryTitle,
-                description = expenseDescription,
-                amount = expenseAmount
-            )
-        )
+        database.expenseItemDao().insert(expenseItem.toExpenseItemEntity(categoryTitle))
     }
 
     fun getAllCategories(): ArrayList<Category> {
@@ -44,9 +38,15 @@ class CategoriesRepo(context: Context) {
     }
 
     private fun initializeCategoryList() {
-        var categories = database.categoryDao().getAll()
+        val categories = database.categoryDao().getAll()
         categories.forEach{
-            categoryList.add(it.toCategory())
+            val expenses = database.expenseItemDao().getByCategoryId(categoryId = it.title)
+            val category = it.toCategory()
+
+            expenses.forEach{
+                category.addExpense(it.toExpenseItem())
+            }
+            categoryList.add(category)
         }
     }
 }
@@ -57,4 +57,12 @@ fun Category.toEntity(): CategoryEntity {
 
 fun CategoryEntity.toCategory(): Category {
     return Category(title = title, totalPrice = totalPrice)
+}
+
+fun ExpenseItemEntity.toExpenseItem(): ExpenseItem {
+    return ExpenseItem(description = description, amount = amount)
+}
+
+fun ExpenseItem.toExpenseItemEntity(categoryId: String): ExpenseItemEntity {
+    return ExpenseItemEntity(description = description, amount = amount, categoryId = categoryId)
 }

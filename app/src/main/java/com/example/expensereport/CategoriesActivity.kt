@@ -8,29 +8,36 @@ import com.example.expensereport.Database.entities.CategoryEntity
 
 class CategoriesActivity : AppCompatActivity() {
     private lateinit var categoriesRecycler: RecyclerView
-    private val categoryRepo = CategoriesRepo()
+    //private val categoryRepo = CategoriesRepo()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_categories)
         categoriesRecycler = findViewById(R.id.category_recycler)
-        categoryRepo.categoryList.addAll(FakeDatabase.getSavedCategories())
-        val adaptor = CategoryAdaptor(categoryRepo.categoryList)
-        categoriesRecycler.adapter = adaptor
-        testDatabase()
+        //categoryRepo.categoryList.addAll(FakeDatabase.getSavedCategories())
+       // val adaptor = CategoryAdaptor(categoryRepo.categoryList)
+       // categoriesRecycler.adapter = adaptor
+       // testDatabase()
+        val repository = CategoriesRepo(this)
+
     }
 
     fun testDatabase () {
-        var database = CategoryDatabase.getDatabase(this)
-        var category = CategoryEntity(title = "Billtest", totalPrice = 10.01)
-        var category2 = CategoryEntity(title = "Billtest2", totalPrice = 10.02)
-        var category3 = CategoryEntity(title = "Billtest3", totalPrice = 10.03)
-        var category4 = CategoryEntity(title = "Billtest4", totalPrice = 10.04)
+        val repository = CategoriesRepo(this)
+        var category = Category(title = "Billtest")
+        category.addExpense(expenseItem = ExpenseItem(description = "Expense1", amount = 2.01))
+        category.addExpense(expenseItem = ExpenseItem(description = "Expense2", amount = 4.25))
+        repository.addCategory(category)
+        repository.addExpenseToCategory(categoryTitle = "Billtest", expenseAmount = 2.01, expenseDescription = "Expense1")
+        repository.addExpenseToCategory(categoryTitle = "Billtest", expenseAmount = 4.25, expenseDescription = "Expense2")
+        var category2 = Category(title = "Billtest2")
+        var category3 = Category(title = "Billtest3")
+        var category4 = Category(title = "Billtest4")
 
-        database.categoryDao().insert(category)
-        database.categoryDao().insert(category2)
-        database.categoryDao().insert(category3)
-        database.categoryDao().insert(category4)
+
+        repository.addCategory(category2)
+        repository.addCategory(category3)
+        repository.addCategory(category4)
     }
 
 }
