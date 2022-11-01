@@ -40,6 +40,8 @@ class CategoriesActivity : AppCompatActivity() {
             val input = categoryText.text.toString()
             if (input.isEmpty()) {
                 Toast.makeText(this, "Enter Category!", Toast.LENGTH_LONG).show()
+            } else if (categoryRepo.categoryExists(input)) {
+                Toast.makeText(this, "Category already exists", Toast.LENGTH_LONG).show()
             } else {
                 categoryRepo.addCategory(title = input)
                 Toast.makeText(this, "Category Created", Toast.LENGTH_LONG).show()

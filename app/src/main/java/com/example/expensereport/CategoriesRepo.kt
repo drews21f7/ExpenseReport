@@ -2,6 +2,7 @@ package com.example.expensereport
 
 import android.content.Context
 import com.example.expensereport.Database.CategoryDatabase
+import com.example.expensereport.Database.daos.CategoryDao
 import com.example.expensereport.Database.entities.CategoryEntity
 import com.example.expensereport.Database.entities.ExpenseItemEntity
 
@@ -16,7 +17,18 @@ class CategoriesRepo(context: Context) {
 
     fun addCategory(title: String) {
         val category = Category(title = title)
+        categoryList.add(category)
         database.categoryDao().insert(category.toEntity())
+    }
+
+    fun categoryExists(title: String) : Boolean {
+        // This for loop works like the .find in the deleteCategory Function
+        categoryList.forEach{
+            if (it.title == title) {
+                return true
+            }
+        }
+        return false
     }
 
     fun addExpenseToCategory(
@@ -36,6 +48,15 @@ class CategoriesRepo(context: Context) {
 
     fun getAllCategories(): ArrayList<Category> {
         return categoryList
+    }
+
+    fun deleteCategory (title: String) {
+        val category = categoryList.find { it.title == title }
+        category?.let {
+            categoryList.remove(it)
+            database.categoryDao().delete(it.title)
+        }
+
     }
 
     private fun initializeCategoryList() {

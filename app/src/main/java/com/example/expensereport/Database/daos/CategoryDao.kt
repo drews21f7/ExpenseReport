@@ -1,5 +1,6 @@
 package com.example.expensereport.Database.daos
 
+import android.icu.text.CaseMap
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -11,9 +12,11 @@ interface CategoryDao {
     @Query("SELECT * FROM CategoryTable")
     fun getAll(): List<CategoryEntity>
 
+
+
     @Insert
     fun insert(categoryEntity: CategoryEntity)
 
-    @Delete
-    fun delete(categoryEntity: CategoryEntity)
+    @Query("DELETE * FROM CategoryTable WHERE title == :categoryTitle")
+    fun delete(categoryTitle: String)
 }
