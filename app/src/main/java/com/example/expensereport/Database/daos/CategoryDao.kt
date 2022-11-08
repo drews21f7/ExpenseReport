@@ -17,6 +17,6 @@ interface CategoryDao {
     @Insert
     fun insert(categoryEntity: CategoryEntity)
 
-    @Query("DELETE * FROM CategoryTable WHERE title == :categoryTitle")
+    @Query("DELETE FROM CategoryTable WHERE title == :categoryTitle")
     fun delete(categoryTitle: String)
 }

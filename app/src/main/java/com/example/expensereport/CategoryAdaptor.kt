@@ -11,6 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 
 class CategoryAdaptor(private val categories: ArrayList<Category>): RecyclerView.Adapter<CategoryAdaptor.ViewHolder>() {
 
+    interface ClickListener {
+        fun delete(categoryTitle: String)
+    }
+    var clickListener: ClickListener? = null
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         var categoryTitle: TextView
@@ -20,6 +24,7 @@ class CategoryAdaptor(private val categories: ArrayList<Category>): RecyclerView
         var cancelButton: Button
         var saveButton: Button
         var categoryTotal: TextView
+        var deleteButton: ImageView
 
 
         init {
@@ -30,11 +35,13 @@ class CategoryAdaptor(private val categories: ArrayList<Category>): RecyclerView
             cancelButton = view.findViewById(R.id.cancel_button)
             saveButton = view.findViewById(R.id.save_button)
             categoryTotal = view.findViewById(R.id.category_total_amount)
+            deleteButton = view.findViewById(R.id.img_delete)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.category_item, parent, false)
+
         return ViewHolder(view)
     }
 
@@ -48,6 +55,11 @@ class CategoryAdaptor(private val categories: ArrayList<Category>): RecyclerView
             val categoryExpense = ExpenseItem(description = description, amount = amount)
             category.addExpense(categoryExpense)
             holder.categoryTotal.text = category.formatExpenseTotals()
+        }
+
+        holder.deleteButton.setOnClickListener{
+            val title = category.title
+            clickListener?.delete(categoryTitle = title)
         }
     }
 

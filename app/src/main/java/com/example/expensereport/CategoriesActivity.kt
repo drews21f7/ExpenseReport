@@ -19,8 +19,15 @@ class CategoriesActivity : AppCompatActivity() {
     private val categoryRepo = CategoriesRepo(this)
     private val categoryAdaptor = CategoryAdaptor(categories = categoryRepo.getAllCategories())
 
+    private val clickListener = object: CategoryAdaptor.ClickListener{
+        override fun delete(categoryTitle: String) {
+            categoryRepo.deleteCategory(title = categoryTitle)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        categoryAdaptor.clickListener = clickListener
         setContentView(R.layout.activity_categories)
 
         cancelButton = findViewById(R.id.cancel_button)

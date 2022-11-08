@@ -17,6 +17,6 @@ interface ExpenseItemDao {
     @Insert
     fun insert(expenseItemEntity: ExpenseItemEntity)
 
-    @Delete
-    fun delete(expenseItemEntity: ExpenseItemEntity)
+    @Query("DELETE FROM ExpenseItemTable WHERE category_id == :categoryTitle")
+    fun delete(categoryTitle: String)
 }
